@@ -1,0 +1,67 @@
+name: calender_app
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_riverpod: ^3.0.3
+  riverpod_annotation: ^3.0.3
+  go_router: ^16.3.0
+  table_calendar: ^3.1.2
+  intl: 
+  scrollable_positioned_list: ^0.3.8
+  modal_bottom_sheet: ^3.0.0
+  cloud_firestore: ^6.1.0
+  firebase_core: ^4.2.1
+  firebase_auth: ^6.1.2
+  flutter_datetime_picker_plus: ^2.2.0
+  flutter_native_splash: ^2.4.7
+  flutter_launcher_icons: ^0.14.4
+  liquid_glass_renderer: ^0.2.0-dev.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+  custom_lint: ^0.8.0
+  riverpod_lint: ^3.0.3
+  build_runner: ^2.7.1
+  riverpod_generator: ^3.0.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    - images/
+  
+flutter_native_splash:
+  # 以下修正後は、flutter pub run flutter_native_splash:createで更新
+  color: '#F6F6F6'
+  image: 'images/icon.png'
+  color_dark: '#262626'
+  image_dark: 'images/icon.png'
+  fullscreen: true
+  android_12:
+    icon_background_color: '#F6F6F6'
+    image: 'images/icon.png'
+    icon_background_color_dark: '#262626'
+    image_dark: 'images/icon.png'
+
+flutter_launcher_icons: 
+  image_path_android: images/app_icon_android.png
+  adaptive_icon_background: '#F6F6F6'
+  adaptive_icon_foreground: images/app_icon_android.png
+  image_path_ios: images/app_icon_ios.png
+  android: true
+  adaptive_icon_padding: true
+  min_sdk_android: 30 #Androidの最小SDKバージョン
+  ios: true  

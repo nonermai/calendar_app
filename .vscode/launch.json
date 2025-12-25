@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "release",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "-t",
+                "./lib/main/release.dart"
+            ]
+        },
+        {
+            "name": "debug",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "-t",
+                "./lib/main.dart"
+            ]
+        },
+        {
+            "name": "localhost",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "-t",
+                "./lib/main/localhost.dart"
+            ]
+        },
+        {
+            "name": "demo_widget",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "-t",
+                "./test/widget_test.dart"
+            ]
+        }
+    ]
+}

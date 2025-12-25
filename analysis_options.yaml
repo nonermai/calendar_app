@@ -1,0 +1,8 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+
+formatter:
+  # Dartバージョン3.8以上では末尾のカンマが削除される仕様のため、preserveに設定する
+  trailing_commas: preserve
