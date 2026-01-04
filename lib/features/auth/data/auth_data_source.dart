@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2025 sumiirenon. All rights reserved.
+//
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

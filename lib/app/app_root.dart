@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2025 sumiirenon. All rights reserved.
+//
+
 import 'package:calender_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:calender_app/features/auth/presentation/pages/login_page.dart';
 import 'package:calender_app/features/calendar/presentation/pages/calendar_page.dart';

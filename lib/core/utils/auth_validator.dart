@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2025 sumiirenon. All rights reserved.
+//
+
 class AuthValidator {
   static String? validateEmail(String email) {
     if (email.isEmpty) {

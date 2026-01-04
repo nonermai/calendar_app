@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2025 sumiirenon. All rights reserved.
+//
+
 import 'auth_result_state.dart';
 import 'auth_user.dart';
 

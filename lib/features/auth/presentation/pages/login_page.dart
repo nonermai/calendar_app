@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2025 sumiirenon. All rights reserved.
+//
+
 import 'package:calender_app/core/constants/app_string.dart';
 import 'package:calender_app/core/utils/auth_validator.dart';
 import 'package:calender_app/core/widgets/liquid_glass_button.dart';

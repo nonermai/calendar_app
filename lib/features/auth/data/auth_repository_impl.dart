@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2025 sumiirenon. All rights reserved.
+//
+
 import 'package:calender_app/features/auth/data/auth_data_source.dart';
 import 'package:calender_app/features/auth/domain/auth_result_state.dart';
 import 'package:calender_app/features/auth/domain/auth_repository.dart';

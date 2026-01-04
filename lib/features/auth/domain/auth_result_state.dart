@@ -1,3 +1,7 @@
+//
+// Copyright (c) 2025 sumiirenon. All rights reserved.
+//
+
 enum AuthResultState {
   invalidEmail,
   userDisabled,
