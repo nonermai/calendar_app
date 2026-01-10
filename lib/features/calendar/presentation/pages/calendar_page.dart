@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 sumiirenon. All rights reserved.
+// Copyright (c) 2025-2026 sumiirenon. All rights reserved.
 //
 
 import 'package:calender_app/core/constants/app_duration.dart';
@@ -10,6 +10,7 @@ import 'package:calender_app/core/widgets/common_dialog.dart';
 import 'package:calender_app/core/widgets/liquid_glass_button.dart';
 import 'package:calender_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calender_app/features/calendar/presentation/widgets/calendar_body.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
@@ -60,6 +61,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         index: _currentMonthIndex,
       );
       isCurrentMonthDisplayed = true;
+      FlutterNativeSplash.remove();
     });
 
     // スクロール監視リスナー追加
@@ -132,83 +134,85 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           ],
         ),
       ),
-      body: Stack(
-        children: [
-          CalendarBody(
-            months: months,
-            itemScrollController: _itemScrollController,
-            itemPositionsListener: _itemPositionsListener,
-            currentMonthIndex: _currentMonthIndex,
-            dispMonthIndex: _dispMonthIndex,
-          ),
-          LiquidGlassLayer(
-            settings: const LiquidGlassSettings(
-              thickness: 10,
-              blur: 2,
-              lightIntensity: 1.5,
-              lightAngle: 45,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            CalendarBody(
+              months: months,
+              itemScrollController: _itemScrollController,
+              itemPositionsListener: _itemPositionsListener,
+              currentMonthIndex: _currentMonthIndex,
+              dispMonthIndex: _dispMonthIndex,
             ),
-            child: SizedBox(
-              height: 56,
-              child: LiquidGlass(
-                shape: LiquidRoundedRectangle(borderRadius: 0.0),
-                child: GlassGlow(
-                  hitTestBehavior: HitTestBehavior.deferToChild,
-                  glowColor: AppColor.grow,
-                  glowRadius: 3.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          '${months[_dispMonthIndex].year}',
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500,
-                            color: AppColor.secondaryColor,
+            LiquidGlassLayer(
+              settings: const LiquidGlassSettings(
+                thickness: 10,
+                blur: 2,
+                lightIntensity: 1.5,
+                lightAngle: 45,
+              ),
+              child: SizedBox(
+                height: 56,
+                child: LiquidGlass(
+                  shape: LiquidRoundedRectangle(borderRadius: 0.0),
+                  child: GlassGlow(
+                    hitTestBehavior: HitTestBehavior.deferToChild,
+                    glowColor: AppColor.grow,
+                    glowRadius: 3.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            '${months[_dispMonthIndex].year}',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                              color: AppColor.secondaryColor,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: GestureDetector(
-                          child: Icon(
-                            Icons.logout,
-                            color: AppColor.secondaryColor,
-                            size: 20,
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: GestureDetector(
+                            child: Icon(
+                              Icons.logout,
+                              color: AppColor.secondaryColor,
+                              size: 20,
+                            ),
+                            onTap: () {
+                              // ログアウトダイアログを呼び出す
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CommonDialog(
+                                    title: 'ログアウトしますか？',
+                                    primaryButtonText: 'はい',
+                                    secondButtonText: 'キャンセル',
+                                    primaryAction: () {
+                                      Navigator.pop(context);
+                                      ref
+                                          .read(authControllerProvider.notifier)
+                                          .signOut();
+                                    },
+                                    secondAction: () {
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                },
+                              );
+                            },
                           ),
-                          onTap: () {
-                            // ログアウトダイアログを呼び出す
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return CommonDialog(
-                                  title: 'ログアウトしますか？',
-                                  primaryButtonText: 'はい',
-                                  secondButtonText: 'キャンセル',
-                                  primaryAction: () {
-                                    Navigator.pop(context);
-                                    ref
-                                        .read(authControllerProvider.notifier)
-                                        .signOut();
-                                  },
-                                  secondAction: () {
-                                    Navigator.pop(context);
-                                  },
-                                );
-                              },
-                            );
-                          },
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

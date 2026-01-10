@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 sumiirenon. All rights reserved.
+// Copyright (c) 2025-2026 sumiirenon. All rights reserved.
 //
 
 import 'package:calender_app/core/constants/app_layout.dart';
@@ -427,127 +427,121 @@ class _CalendarBodyState extends ConsumerState<CalendarBody> {
             )
             .toList();
 
-        return SafeArea(
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(
-                  AppLayout.modalContentPadding,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${selected.month}${AppString.monthUnit}${selected.day}${AppString.dayUnit}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.secondaryColor,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: AppLayout.modalDateBottomSpace,
-                    ),
-                    // イベントがない場合
-                    if (dayEvents.isEmpty)
-                      Center(
-                        child: Text(
-                          AppString.noEvents,
-                          style: TextStyle(
-                            color: AppColor.thirdColor,
-                          ),
-                        ),
-                      )
-                    else
-                      Flexible(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: dayEvents.length,
-                          itemBuilder: (context, index) {
-                            final event = dayEvents[index];
-                            return ListTile(
-                              // イベントのタイトルを表示
-                              title: Text(
-                                event.title,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: AppColor.secondaryColor,
-                                ),
-                              ),
-                              // イベントタップ時の処理
-                              onTap: () {
-                                debugPrint(
-                                  'イベント「${event.title}」(id:${event.id})がタップされました',
-                                );
-                                // ダイアログ表示
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return CommonDialog(
-                                      title:
-                                          AppString.confirmDeleteEventMessage,
-                                      primaryButtonText: AppString.delete,
-                                      secondButtonText: AppString.cancel,
-                                      primaryAction: () {
-                                        // idを指定してイベント削除
-                                        eventListController.deleteEvent(
-                                          event.id,
-                                        );
-                                        // ダイアログとモーダルを両方閉じる
-                                        Navigator.pop(context);
-                                        Navigator.pop(context);
-                                      },
-                                      secondAction: () {
-                                        Navigator.pop(context);
-                                      },
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                  ],
-                ),
+        return Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(
+                AppLayout.modalContentPadding,
               ),
-              Positioned(
-                right: AppLayout.modalAddButtonRightPosition,
-                bottom: AppLayout.modalAddButtonBottomPosition,
-                child: LiquidGlassLayer(
-                  child: LiquidGlassButton(
-                    height: 48,
-                    width: 48,
-                    borderRadius: 24.0,
-                    onTap: () {
-                      // ダイアログ表示
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AddEventDialog(
-                            initialDate: selected,
-                            onAddEvent: (title, start, end, color) {
-                              eventListController.createEvent(
-                                title,
-                                start,
-                                end,
-                                color,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${selected.month}${AppString.monthUnit}${selected.day}${AppString.dayUnit}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColor.secondaryColor,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: AppLayout.modalDateBottomSpace,
+                  ),
+                  // イベントがない場合
+                  if (dayEvents.isEmpty)
+                    Center(
+                      child: Text(
+                        AppString.noEvents,
+                        style: TextStyle(
+                          color: AppColor.thirdColor,
+                        ),
+                      ),
+                    )
+                  else
+                    Flexible(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: dayEvents.length,
+                        itemBuilder: (context, index) {
+                          final event = dayEvents[index];
+                          return ListTile(
+                            // イベントのタイトルを表示
+                            title: Text(
+                              event.title,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: AppColor.secondaryColor,
+                              ),
+                            ),
+                            // イベントタップ時の処理
+                            onTap: () {
+                              // ダイアログ表示
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CommonDialog(
+                                    title: AppString.confirmDeleteEventMessage,
+                                    primaryButtonText: AppString.delete,
+                                    secondButtonText: AppString.cancel,
+                                    primaryAction: () {
+                                      // idを指定してイベント削除
+                                      eventListController.deleteEvent(
+                                        event.id,
+                                      );
+                                      // ダイアログとモーダルを両方閉じる
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    },
+                                    secondAction: () {
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                },
                               );
                             },
                           );
                         },
-                      );
-                    },
-                    child: const Icon(
-                      Icons.add,
-                      size: AppLayout.modalAddButtonIconSize,
+                      ),
                     ),
+                ],
+              ),
+            ),
+            Positioned(
+              right: AppLayout.modalAddButtonRightPosition,
+              bottom: AppLayout.modalAddButtonBottomPosition,
+              child: LiquidGlassLayer(
+                child: LiquidGlassButton(
+                  height: 48,
+                  width: 48,
+                  borderRadius: 24.0,
+                  onTap: () {
+                    // ダイアログ表示
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AddEventDialog(
+                          initialDate: selected,
+                          onAddEvent: (title, start, end, color) {
+                            eventListController.createEvent(
+                              title,
+                              start,
+                              end,
+                              color,
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                  child: const Icon(
+                    Icons.add,
+                    size: AppLayout.modalAddButtonIconSize,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );

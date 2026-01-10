@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 sumiirenon. All rights reserved.
+// Copyright (c) 2025-2026 sumiirenon. All rights reserved.
 //
 
 import 'package:calender_app/core/constants/app_string.dart';
@@ -9,6 +9,7 @@ import 'package:calender_app/core/widgets/liquid_glass_text_box.dart';
 import 'package:calender_app/features/auth/domain/auth_result_state.dart';
 import 'package:calender_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -21,10 +22,14 @@ class LoginPage extends ConsumerStatefulWidget {
 class _LoginPageState extends ConsumerState<LoginPage> {
   String email = '';
   String password = '';
-
   bool? isResisteredEver;
-
   bool _isFetchingEvents = false;
+
+  @override
+  void initState() {
+    FlutterNativeSplash.remove();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -212,9 +217,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             );
                             return;
                           case null:
-                            debugPrint(
-                              'Registration successful email: $email password: $password',
-                            );
                             return;
                         }
                       },
@@ -258,9 +260,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             );
                             return;
                           case null:
-                            debugPrint(
-                              'Login successful email: $email password: $password',
-                            );
                             return;
                         }
                       },
