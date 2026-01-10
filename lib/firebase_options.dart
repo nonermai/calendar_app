@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '128257301040',
     projectId: 'calendar-883c5',
     storageBucket: 'calendar-883c5.firebasestorage.app',
-    iosBundleId: 'com.example.calendarApp',
+    iosBundleId: 'com.renon.calendarapp',
   );
 }
