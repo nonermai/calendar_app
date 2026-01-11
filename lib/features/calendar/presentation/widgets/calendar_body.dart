@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025-2026 sumiirenon. All rights reserved.
+// Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
 import 'package:calender_app/core/constants/app_layout.dart';

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 sumiirenon. All rights reserved.
+// Copyright (c) 2025 Renon Sumii. All rights reserved.
 //
 
 import 'package:calender_app/features/auth/domain/auth_result.dart';

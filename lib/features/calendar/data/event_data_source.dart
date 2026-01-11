@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 sumiirenon. All rights reserved.
+// Copyright (c) 2025 Renon Sumii. All rights reserved.
 //
 
 import 'package:cloud_firestore/cloud_firestore.dart';
