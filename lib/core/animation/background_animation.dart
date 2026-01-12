@@ -81,7 +81,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
                 color: const Color(0x78FFFFFF),
                 baseOffset: _positions[1],
                 radius: size.width * 1.0,
-                phase: 2.1, // 動きをずらす
+                phase: 2.1,
               ),
               // 下部
               _buildBlurCircle(
