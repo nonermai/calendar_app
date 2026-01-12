@@ -181,6 +181,17 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               ),
             ),
             Positioned(
+              left: 0,
+              right: 0,
+              top: 8,
+              child: Center(
+                child: Image(
+                  image: const AssetImage('images/app_icon_android.png'),
+                  width: 40,
+                ),
+              ),
+            ),
+            Positioned(
               right: 0,
               child: GestureDetector(
                 child: SizedBox(
