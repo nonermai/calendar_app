@@ -12,6 +12,7 @@ import 'package:calender_app/features/calendar/presentation/widgets/add_event_di
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calender_app/features/calendar/domain/event.dart';
+import 'package:holiday_jp/holiday_jp.dart' as holiday_jp;
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -49,108 +50,106 @@ class _CalendarBodyState extends ConsumerState<CalendarBody> {
     // イベント一覧の非同期データを監視
     final eventsAsync = ref.watch(eventListControllerProvider);
 
-    return SafeArea(
-      child: eventsAsync.when(
-        // データ取得成功時
-        data: (events) {
-          final laneMap = buildLaneMap(events);
+    return eventsAsync.when(
+      // データ取得成功時
+      data: (events) {
+        final laneMap = buildLaneMap(events);
 
-          return ScrollablePositionedList.builder(
-            itemScrollController: widget.itemScrollController,
-            itemPositionsListener: widget.itemPositionsListener,
-            itemCount: widget.months.length,
-            itemBuilder: (context, index) {
-              final dispMonth = widget.months[index];
-              return Column(
-                children: [
-                  const SizedBox(
-                    height: AppLayout.calendarHeaderVerticalSpace,
+        return ScrollablePositionedList.builder(
+          itemScrollController: widget.itemScrollController,
+          itemPositionsListener: widget.itemPositionsListener,
+          itemCount: widget.months.length,
+          itemBuilder: (context, index) {
+            final dispMonth = widget.months[index];
+            return Column(
+              children: [
+                const SizedBox(
+                  height: AppLayout.calendarHeaderVerticalSpace,
+                ),
+                // 各月を表示
+                Text(
+                  '${dispMonth.month}${AppString.monthUnit}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.secondaryColor,
                   ),
-                  // 各月を表示
-                  Text(
-                    '${dispMonth.month}${AppString.monthUnit}',
-                    style: const TextStyle(
-                      fontSize: 20,
+                ),
+                const SizedBox(
+                  height: AppLayout.calendarHeaderVerticalSpace,
+                ),
+                TableCalendar(
+                  locale: "ja_JP",
+                  firstDay: AppLogic.firstDisplayDate,
+                  lastDay: AppLogic.lastDisplayDate,
+                  focusedDay: dispMonth,
+                  selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                  // セルを選択した時の処理
+                  onDaySelected: (selected, focused) {
+                    setState(() {
+                      _selectedDay = selected;
+                    });
+                    // bottomSheetModalを表示
+                    _showAddEventSheet(events, selected);
+                  },
+                  calendarFormat: CalendarFormat.month,
+                  availableGestures: AvailableGestures.none,
+                  headerVisible: false,
+                  calendarStyle: const CalendarStyle(
+                    outsideDaysVisible: false,
+                    todayDecoration: BoxDecoration(
+                      color: AppColor.accentColor,
+                      shape: BoxShape.circle,
+                    ),
+                    // 選択された日の背景色
+                    selectedDecoration: BoxDecoration(
+                      color: AppColor.secondaryColor,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  daysOfWeekVisible: false,
+                  rowHeight: AppLayout.cellHeight,
+                  headerStyle: HeaderStyle(
+                    formatButtonVisible: false,
+                    leftChevronVisible: false,
+                    rightChevronVisible: false,
+                    titleCentered: true,
+                    titleTextStyle: TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontSize: 18,
                       color: AppColor.secondaryColor,
                     ),
-                  ),
-                  const SizedBox(
-                    height: AppLayout.calendarHeaderVerticalSpace,
-                  ),
-                  TableCalendar(
-                    locale: "ja_JP",
-                    firstDay: AppLogic.firstDisplayDate,
-                    lastDay: AppLogic.lastDisplayDate,
-                    focusedDay: dispMonth,
-                    selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-                    // セルを選択した時の処理
-                    onDaySelected: (selected, focused) {
-                      setState(() {
-                        _selectedDay = selected;
-                      });
-                      // bottomSheetModalを表示
-                      _showAddEventSheet(events, selected);
+                    titleTextFormatter: (date, locale) {
+                      return '${date.month}${AppString.monthUnit}';
                     },
-                    calendarFormat: CalendarFormat.month,
-                    availableGestures: AvailableGestures.none,
-                    headerVisible: false,
-                    calendarStyle: const CalendarStyle(
-                      outsideDaysVisible: false,
-                      todayDecoration: BoxDecoration(
-                        color: AppColor.accentColor,
-                        shape: BoxShape.circle,
-                      ),
-                      // 選択された日の背景色
-                      selectedDecoration: BoxDecoration(
-                        color: AppColor.secondaryColor,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    daysOfWeekVisible: false,
-                    rowHeight: AppLayout.cellHeight,
-                    headerStyle: HeaderStyle(
-                      formatButtonVisible: false,
-                      leftChevronVisible: false,
-                      rightChevronVisible: false,
-                      titleCentered: true,
-                      titleTextStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: AppColor.secondaryColor,
-                      ),
-                      titleTextFormatter: (date, locale) {
-                        return '${date.month}${AppString.monthUnit}';
-                      },
-                    ),
-                    // カレンダーの日付セルをカスタム描画する
-                    // 日付の分だけ呼ばれる関数
-                    calendarBuilders: CalendarBuilders(
-                      // 今日でも選択日でもない日のbuilder
-                      // サークルは今日または選択時にしか表示されないため、サークルの背景色はここでは指定しない
-                      defaultBuilder: (context, day, focusedDay) =>
-                          buildDefault(context, day, events),
-                      // 今日の日のbuilder
-                      todayBuilder: (context, day, focusedDay) =>
-                          buildToday(context, day, events),
-                      // 選択された日のbuilder
-                      selectedBuilder: (context, day, focusedDay) =>
-                          buildSelected(context, day, events),
-                      // イベント表示用のbuilder
-                      markerBuilder: (context, day, _) =>
-                          buildEventMarker(context, day, events, laneMap),
-                    ),
                   ),
-                ],
-              );
-            },
-          );
-        },
-        // データ取得中
-        loading: () => const Center(child: CircularProgressIndicator()),
-        // データ取得失敗時
-        error: (err, _) => Center(child: Text('エラー: $err')),
-      ),
+                  // カレンダーの日付セルをカスタム描画する
+                  // 日付の分だけ呼ばれる関数
+                  calendarBuilders: CalendarBuilders(
+                    // 今日でも選択日でもない日のbuilder
+                    // サークルは今日または選択時にしか表示されないため、サークルの背景色はここでは指定しない
+                    defaultBuilder: (context, day, focusedDay) =>
+                        buildDefault(context, day, events),
+                    // 今日の日のbuilder
+                    todayBuilder: (context, day, focusedDay) =>
+                        buildToday(context, day, events),
+                    // 選択された日のbuilder
+                    selectedBuilder: (context, day, focusedDay) =>
+                        buildSelected(context, day, events),
+                    // イベント表示用のbuilder
+                    markerBuilder: (context, day, _) =>
+                        buildEventMarker(context, day, events, laneMap),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      // データ取得中
+      loading: () => const Center(child: CircularProgressIndicator()),
+      // データ取得失敗時
+      error: (err, _) => Center(child: Text('エラー: $err')),
     );
   }
 
@@ -163,7 +162,7 @@ class _CalendarBodyState extends ConsumerState<CalendarBody> {
     // セルの文字色カスタム
     final weekday = day.weekday;
     Color textColor;
-    if (weekday == DateTime.sunday) {
+    if (weekday == DateTime.sunday || holiday_jp.isHoliday(day)) {
       // 日曜日は赤
       textColor = AppColor.accentColor;
     } else if (weekday == DateTime.saturday) {
@@ -408,6 +407,10 @@ class _CalendarBodyState extends ConsumerState<CalendarBody> {
 
   // 日付選択時にモーダルシートを表示する
   void _showAddEventSheet(List events, DateTime selected) {
+    // 祝日情報を取得
+    final holiday = holiday_jp.getHoliday(selected);
+    final String? holidayName = holiday?.name;
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -437,13 +440,48 @@ class _CalendarBodyState extends ConsumerState<CalendarBody> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${selected.month}${AppString.monthUnit}${selected.day}${AppString.dayUnit}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.secondaryColor,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        '${selected.month}${AppString.monthUnit}${selected.day}${AppString.dayUnit}',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColor.secondaryColor,
+                        ),
+                      ),
+                      // 祝日の場合のみ名前を表示
+                      if (holidayName != null) ...[
+                        RichText(
+                          text: TextSpan(
+                            text: '（',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.secondaryColor,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: holidayName,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.accentColor,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '）',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.secondaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                   const SizedBox(
                     height: AppLayout.modalDateBottomSpace,

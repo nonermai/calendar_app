@@ -2,6 +2,7 @@
 // Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
+import 'package:calender_app/core/animation/background_animation.dart';
 import 'package:calender_app/core/constants/app_string.dart';
 import 'package:calender_app/core/utils/auth_validator.dart';
 import 'package:calender_app/core/widgets/liquid_glass_button.dart';
@@ -39,22 +40,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF4B6081),
-                  Color(0xFF6A7380),
-                  Color(0xFF8A8F91),
-                  Color(0xFFB49A7E),
-                  Color(0xFFC08A66),
-                ],
-                stops: [0.0, 0.35, 0.6, 0.8, 1.0],
-              ),
-            ),
-          ),
+          const AnimatedBackground(),
           Padding(
             padding: const EdgeInsets.all(16),
             child: auth.when(

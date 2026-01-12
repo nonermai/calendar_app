@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Renon Sumii. All rights reserved.
+// Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
 import 'package:calender_app/core/constants/app_layout.dart';
@@ -68,155 +68,161 @@ class _AddEventDialogState extends State<AddEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: MediaQuery.of(context).size.height * 0.2,
-        horizontal: 24.0,
-      ),
-      child: Material(
-        borderRadius: BorderRadius.circular(
-          AppLayout.addEventDialogBorderRadius,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: MediaQuery.of(context).size.height * 0.2,
+          horizontal: 24.0,
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // タイトル
-            Text(
-              AppString.newEvent,
-              style: const TextStyle(fontSize: 20),
-            ),
-
-            const SizedBox(height: 24),
-
-            /// 予定入力テキストボックス
-            SizedBox(
-              width: AppLayout.eventTitleTextBoxWidth,
-              child: TextField(
-                controller: _titleController,
-                decoration: InputDecoration(
-                  hintText: AppString.inputEvent,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(
-                      AppLayout.eventTitleTextBoxBorderRadius,
-                    ),
-                  ),
-                ),
+        child: Material(
+          borderRadius: BorderRadius.circular(
+            AppLayout.addEventDialogBorderRadius,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 24),
+              // タイトル
+              Text(
+                AppString.newEvent,
+                style: const TextStyle(fontSize: 20),
               ),
-            ),
-            if (_alertMessage != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: Text(
-                  _alertMessage!,
-                  style: TextStyle(color: AppColor.accentColor),
-                ),
-              ),
-            const SizedBox(
-              height: AppLayout.eventTitleTextBoxBottomSpace,
-            ),
+              const SizedBox(height: 24),
 
-            /// 日付選択
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _dateField(
-                  context: context,
-                  label: AppString.startDate,
-                  controller: _startDateController,
-                  initialDate: _startDate,
-                  onConfirm: (date) {
-                    setState(() {
-                      _startDate = date;
-                      _startDateController.text = _formatDate(date);
-                    });
-                  },
-                ),
-                const Text(' 〜 '),
-                _dateField(
-                  context: context,
-                  label: AppString.endDate,
-                  controller: _endDateController,
-                  initialDate: _endDate,
-                  onConfirm: (date) {
-                    setState(() {
-                      _endDate = date;
-                      _endDateController.text = _formatDate(date);
-                    });
-                  },
-                ),
-              ],
-            ),
-
-            /// 色選択
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(AppString.chooseBGColor),
-                const SizedBox(
-                  width: AppLayout.chooseColorTextAndDropdownSpace,
-                ),
-                DropdownButton<Color>(
-                  value: _eventColor,
-                  items: AppColor.eventBackgroundColor.map((color) {
-                    return DropdownMenuItem(
-                      value: color,
-                      child: Container(
-                        width: AppLayout.previewColorWidth,
-                        decoration: BoxDecoration(
-                          color: color,
-                          shape: BoxShape.circle,
-                        ),
+              /// 予定入力テキストボックス
+              SizedBox(
+                width: AppLayout.eventTitleTextBoxWidth,
+                child: TextField(
+                  controller: _titleController,
+                  decoration: InputDecoration(
+                    hintText: AppString.inputEvent,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                        AppLayout.eventTitleTextBoxBorderRadius,
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (color) {
-                    if (color != null) {
-                      setState(() => _eventColor = color);
-                    }
-                  },
+                    ),
+                  ),
                 ),
-              ],
-            ),
+              ),
+              if (_alertMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Text(
+                    _alertMessage!,
+                    style: TextStyle(color: AppColor.accentColor),
+                  ),
+                ),
+              const SizedBox(
+                height: AppLayout.eventTitleTextBoxBottomSpace,
+              ),
 
-            /// ボタン
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                LiquidGlassButton(
-                  width: AppLayout.buttonWidth,
-                  child: Text(
-                    AppString.cancel,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColor.secondaryColor,
-                      fontWeight: FontWeight.w300,
-                    ),
+              /// 日付選択
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _dateField(
+                    context: context,
+                    label: AppString.startDate,
+                    controller: _startDateController,
+                    initialDate: _startDate,
+                    onConfirm: (date) {
+                      setState(() {
+                        _startDate = date;
+                        _startDateController.text = _formatDate(date);
+                      });
+                    },
                   ),
-                  onTap: () {
-                    setState(() => Navigator.pop(context));
-                  },
-                ),
-                const SizedBox(
-                  width: AppLayout.cancelAndAddButtonSpace,
-                ),
-                LiquidGlassButton(
-                  width: AppLayout.buttonWidth,
-                  child: Text(
-                    AppString.add,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColor.secondaryColor,
-                      fontWeight: FontWeight.w300,
-                    ),
+                  const Text(' 〜 '),
+                  _dateField(
+                    context: context,
+                    label: AppString.endDate,
+                    controller: _endDateController,
+                    initialDate: _endDate,
+                    onConfirm: (date) {
+                      setState(() {
+                        _endDate = date;
+                        _endDateController.text = _formatDate(date);
+                      });
+                    },
                   ),
-                  onTap: () {
-                    setState(() => _onAddPressed());
-                  },
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+
+              const SizedBox(height: 18),
+
+              /// 色選択
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(AppString.chooseBGColor),
+                  const SizedBox(
+                    width: AppLayout.chooseColorTextAndDropdownSpace,
+                  ),
+                  DropdownButton<Color>(
+                    value: _eventColor,
+                    items: AppColor.eventBackgroundColor.map((color) {
+                      return DropdownMenuItem(
+                        value: color,
+                        child: Container(
+                          width: AppLayout.previewColorWidth,
+                          decoration: BoxDecoration(
+                            color: color,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (color) {
+                      if (color != null) {
+                        setState(() => _eventColor = color);
+                      }
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 18),
+
+              /// ボタン
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  LiquidGlassButton(
+                    width: AppLayout.buttonWidth,
+                    child: Text(
+                      AppString.cancel,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColor.secondaryColor,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() => Navigator.pop(context));
+                    },
+                  ),
+                  const SizedBox(
+                    width: AppLayout.cancelAndAddButtonSpace,
+                  ),
+                  LiquidGlassButton(
+                    width: AppLayout.buttonWidth,
+                    child: Text(
+                      AppString.add,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColor.secondaryColor,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() => _onAddPressed());
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );

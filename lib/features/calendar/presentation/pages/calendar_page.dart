@@ -104,6 +104,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
     });
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColor.primaryColor,
       floatingActionButton: Align(
         alignment: Alignment.bottomRight,
@@ -135,6 +136,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         ),
       ),
       body: SafeArea(
+        bottom: false,
         child: Stack(
           children: [
             CalendarBody(
@@ -151,18 +153,17 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                 lightIntensity: 1.5,
                 lightAngle: 45,
               ),
-              child: SizedBox(
-                height: 56,
-                child: LiquidGlass(
-                  shape: LiquidRoundedRectangle(borderRadius: 0.0),
-                  child: GlassGlow(
-                    hitTestBehavior: HitTestBehavior.deferToChild,
-                    glowColor: AppColor.grow,
-                    glowRadius: 3.0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
+              child: AbsorbPointer(
+                child: SizedBox(
+                  height: 56,
+                  child: LiquidGlass(
+                    shape: LiquidRoundedRectangle(borderRadius: 0.0),
+                    child: GlassGlow(
+                      glowColor: AppColor.grow,
+                      glowRadius: 3.0,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
                             '${months[_dispMonthIndex].year}',
@@ -173,42 +174,48 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: GestureDetector(
-                            child: Icon(
-                              Icons.logout,
-                              color: AppColor.secondaryColor,
-                              size: 20,
-                            ),
-                            onTap: () {
-                              // ログアウトダイアログを呼び出す
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return CommonDialog(
-                                    title: 'ログアウトしますか？',
-                                    primaryButtonText: 'はい',
-                                    secondButtonText: 'キャンセル',
-                                    primaryAction: () {
-                                      Navigator.pop(context);
-                                      ref
-                                          .read(authControllerProvider.notifier)
-                                          .signOut();
-                                    },
-                                    secondAction: () {
-                                      Navigator.pop(context);
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
+              ),
+            ),
+            Positioned(
+              right: 0,
+              child: GestureDetector(
+                child: SizedBox(
+                  height: 56,
+                  width: 56,
+                  child: Icon(
+                    Icons.logout,
+                    color: AppColor.secondaryColor,
+                    size: 20,
+                  ),
+                ),
+                onTap: () {
+                  // ログアウトダイアログを呼び出す
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return CommonDialog(
+                        title: 'ログアウトしますか？',
+                        primaryButtonText: 'はい',
+                        secondButtonText: 'キャンセル',
+                        primaryAction: () {
+                          Navigator.pop(context);
+                          ref
+                              .read(
+                                authControllerProvider.notifier,
+                              )
+                              .signOut();
+                        },
+                        secondAction: () {
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],
