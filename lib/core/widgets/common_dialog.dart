@@ -50,7 +50,6 @@ class CommonDialog extends StatelessWidget {
         Row(
           children: [
             LiquidGlassButton(
-              glassColor: AppColor.secondButtonColor,
               onTap: secondAction,
               child: Text(
                 secondButtonText,
@@ -60,7 +59,6 @@ class CommonDialog extends StatelessWidget {
               width: 7,
             ),
             LiquidGlassButton(
-              glassColor: AppColor.primaryButtonColor,
               onTap: primaryAction,
               child: Text(
                 primaryButtonText,
