@@ -28,12 +28,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   void initState() {
+    // スプラッシュ画面を削除
     FlutterNativeSplash.remove();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    // 認証状態を監視
     final auth = ref.watch(authControllerProvider);
 
     return Scaffold(
@@ -46,20 +48,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             child: auth.when(
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (e, _) => Center(child: Text(e.toString())),
-              data: (_) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (isResisteredEver == null) ...[
-                        _firstStep(),
-                      ] else ...[
-                        _secondStep(),
-                      ],
-                    ],
-                  ),
-                );
-              },
+              data: (_) => Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (isResisteredEver == null)
+                      _firstStep()
+                    else
+                      _secondStep(),
+                  ],
+                ),
+              ),
             ),
           ),
         ],

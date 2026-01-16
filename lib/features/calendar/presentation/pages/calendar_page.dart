@@ -39,7 +39,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   late int _dispMonthIndex;
 
   // ログイン後、現在月のカレンダーが表示されたかどうか
-  bool isCurrentMonthDisplayed = false;
+  bool _isCurrentMonthDisplayed = false;
 
   @override
   void initState() {
@@ -60,7 +60,16 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         alignment: 0.1,
         index: _currentMonthIndex,
       );
-      isCurrentMonthDisplayed = true;
+
+      await Future.delayed(const Duration(milliseconds: 50));
+
+      if (mounted) {
+        setState(() {
+          _isCurrentMonthDisplayed = true;
+        });
+      }
+
+      // スプラッシュ画面を削除
       FlutterNativeSplash.remove();
     });
 
@@ -85,7 +94,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
       // カレンダー画面表示直後のjump終了後(index0番目の月で一瞬ビルドされることを防ぐため)
       // 表示月が変わった場合に更新(setState呼び出しを最小限にするため)
       if (mounted &&
-          isCurrentMonthDisplayed &&
+          _isCurrentMonthDisplayed &&
           nextDispIndex != _dispMonthIndex) {
         setState(() {
           _dispMonthIndex = nextDispIndex;
@@ -139,12 +148,17 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         bottom: false,
         child: Stack(
           children: [
-            CalendarBody(
-              months: months,
-              itemScrollController: _itemScrollController,
-              itemPositionsListener: _itemPositionsListener,
-              currentMonthIndex: _currentMonthIndex,
-              dispMonthIndex: _dispMonthIndex,
+            // ジャンプが完了するまでBodyを非表示にする
+            Opacity(
+              // 準備ができるまでは 0.0 (透明)、完了したら 1.0 (表示)
+              opacity: _isCurrentMonthDisplayed ? 1.0 : 0.0,
+              child: CalendarBody(
+                months: months,
+                itemScrollController: _itemScrollController,
+                itemPositionsListener: _itemPositionsListener,
+                currentMonthIndex: _currentMonthIndex,
+                dispMonthIndex: _dispMonthIndex,
+              ),
             ),
             LiquidGlassLayer(
               settings: const LiquidGlassSettings(

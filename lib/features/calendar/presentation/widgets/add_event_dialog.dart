@@ -68,21 +68,24 @@ class _AddEventDialogState extends State<AddEventDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: MediaQuery.of(context).size.height * 0.2,
-          horizontal: 24.0,
-        ),
-        child: Material(
+    return GestureDetector(
+      // ダイアログタップでキーボードを閉じる
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Dialog(
+        backgroundColor: AppColor.primaryColor,
+        // 左右の余白
+        insetPadding: const EdgeInsets.symmetric(horizontal: 24.0),
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
             AppLayout.addEventDialogBorderRadius,
           ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 24),
               // タイトル
               Text(
                 AppString.newEvent,
@@ -159,25 +162,31 @@ class _AddEventDialogState extends State<AddEventDialog> {
                   const SizedBox(
                     width: AppLayout.chooseColorTextAndDropdownSpace,
                   ),
-                  DropdownButton<Color>(
-                    value: _eventColor,
-                    items: AppColor.eventBackgroundColor.map((color) {
-                      return DropdownMenuItem(
-                        value: color,
-                        child: Container(
-                          width: AppLayout.previewColorWidth,
-                          decoration: BoxDecoration(
-                            color: color,
-                            shape: BoxShape.circle,
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton<Color>(
+                      borderRadius: BorderRadius.circular(16),
+                      value: _eventColor,
+                      dropdownColor: AppColor.primaryColor,
+                      menuWidth: AppLayout.dropdownMenuWidth,
+                      items: AppColor.eventBackgroundColor.map((color) {
+                        return DropdownMenuItem(
+                          alignment: Alignment.center,
+                          value: color,
+                          child: Container(
+                            width: AppLayout.previewColorWidth,
+                            decoration: BoxDecoration(
+                              color: color,
+                              shape: BoxShape.circle,
+                            ),
                           ),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (color) {
-                      if (color != null) {
-                        setState(() => _eventColor = color);
-                      }
-                    },
+                        );
+                      }).toList(),
+                      onChanged: (color) {
+                        if (color != null) {
+                          setState(() => _eventColor = color);
+                        }
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -198,7 +207,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                       ),
                     ),
                     onTap: () {
-                      setState(() => Navigator.pop(context));
+                      Navigator.pop(context);
                     },
                   ),
                   const SizedBox(
@@ -215,12 +224,11 @@ class _AddEventDialogState extends State<AddEventDialog> {
                       ),
                     ),
                     onTap: () {
-                      setState(() => _onAddPressed());
+                      _onAddPressed();
                     },
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
             ],
           ),
         ),

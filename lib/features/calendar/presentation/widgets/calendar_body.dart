@@ -147,7 +147,7 @@ class _CalendarBodyState extends ConsumerState<CalendarBody> {
         );
       },
       // データ取得中
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const SizedBox.shrink(),
       // データ取得失敗時
       error: (err, _) => Center(child: Text('エラー: $err')),
     );

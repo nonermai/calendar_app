@@ -28,8 +28,8 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      // 4秒かけてアニメーション(reverse分含めない)
-      duration: const Duration(seconds: 4),
+      // 6秒かけてアニメーション(reverse分含めない)
+      duration: const Duration(seconds: 6),
     )..repeat(reverse: true);
   }
 
@@ -70,7 +70,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
               // 右上
               _buildBlurCircle(
                 size: size,
-                color: const Color(0x78FFFFFF),
+                color: const Color(0xC8FFFFFF),
                 baseOffset: _positions[0],
                 radius: size.width * 1.2,
                 phase: 0.0,
@@ -78,7 +78,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
               // 左上
               _buildBlurCircle(
                 size: size,
-                color: const Color(0x78FFFFFF),
+                color: const Color(0xC8FFFFFF),
                 baseOffset: _positions[1],
                 radius: size.width * 1.0,
                 phase: 2.1,
@@ -86,7 +86,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
               // 下部
               _buildBlurCircle(
                 size: size,
-                color: const Color(0x78FFFFFF),
+                color: const Color(0xC8FFFFFF),
                 baseOffset: _positions[2],
                 radius: size.width * 1.5,
                 phase: 4.5,
