@@ -5,6 +5,7 @@
 import 'package:calender_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -16,6 +17,11 @@ Future<void> main() async {
 
   // スプラッシュ画面の表示を維持
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // 画面の向きを縦固定に設定
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   // 日付フォーマットの初期化
   await initializeDateFormatting();
