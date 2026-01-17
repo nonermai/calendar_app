@@ -1,9 +1,10 @@
 //
-// Copyright (c) 2025 Renon Sumii. All rights reserved.
+// Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
 import 'package:calender_app/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
 ///
@@ -16,8 +17,13 @@ class LiquidGlassButton extends StatelessWidget {
     this.height = 50.0,
     this.width = 120.0,
     this.borderRadius = 30.0,
-    this.color = AppColor.grow,
     this.glassColor = AppColor.glassColor,
+    this.thickness = 10.0,
+    this.blur = 2.0,
+    this.lightIntensity = 0.5,
+    this.lightAngle = 0.25,
+    this.color = AppColor.grow,
+    this.glowRadius = 0.0,
     this.onTap,
   });
 
@@ -26,7 +32,12 @@ class LiquidGlassButton extends StatelessWidget {
   final double width;
   final double borderRadius;
   final Color glassColor;
+  final double thickness;
+  final double blur;
+  final double lightIntensity;
+  final double lightAngle;
   final Color color;
+  final double glowRadius;
   final VoidCallback? onTap;
 
   @override
@@ -34,18 +45,23 @@ class LiquidGlassButton extends StatelessWidget {
     return LiquidGlassLayer(
       settings: LiquidGlassSettings(
         glassColor: glassColor,
-        thickness: 10,
-        blur: 2,
-        lightIntensity: 1.5,
-        lightAngle: 45,
+        thickness: thickness,
+        blur: blur,
+        lightIntensity: lightIntensity,
+        lightAngle: lightAngle,
       ),
       child: GestureDetector(
-        onTap: onTap,
+        onTap: () {
+          if (onTap != null) {
+            onTap!();
+          }
+          HapticFeedback.mediumImpact();
+        },
         child: LiquidGlass(
           shape: LiquidRoundedSuperellipse(borderRadius: borderRadius),
           child: GlassGlow(
             glowColor: color,
-            glowRadius: 3.0,
+            glowRadius: glowRadius,
             child: SizedBox(
               height: height,
               width: width,

@@ -10,6 +10,7 @@ import 'package:calender_app/core/widgets/common_dialog.dart';
 import 'package:calender_app/core/widgets/liquid_glass_button.dart';
 import 'package:calender_app/features/calendar/presentation/widgets/add_event_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calender_app/features/calendar/domain/event.dart';
 import 'package:holiday_jp/holiday_jp.dart' as holiday_jp;
@@ -86,6 +87,7 @@ class _CalendarBodyState extends ConsumerState<CalendarBody> {
                   selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
                   // セルを選択した時の処理
                   onDaySelected: (selected, focused) {
+                    HapticFeedback.mediumImpact();
                     setState(() {
                       _selectedDay = selected;
                     });
@@ -514,6 +516,7 @@ class _CalendarBodyState extends ConsumerState<CalendarBody> {
                             ),
                             // イベントタップ時の処理
                             onTap: () {
+                              HapticFeedback.mediumImpact();
                               // ダイアログ表示
                               showDialog(
                                 context: context,

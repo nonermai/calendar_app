@@ -10,6 +10,7 @@ import 'package:calender_app/core/widgets/common_dialog.dart';
 import 'package:calender_app/core/widgets/liquid_glass_button.dart';
 import 'package:calender_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calender_app/features/calendar/presentation/widgets/calendar_body.dart';
@@ -127,6 +128,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                 width: 50.0,
                 borderRadius: 25.0,
                 onTap: () {
+                  HapticFeedback.mediumImpact();
                   _itemScrollController.scrollTo(
                     alignment: 0.1,
                     index: _currentMonthIndex,
@@ -218,6 +220,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                   ),
                 ),
                 onTap: () {
+                  HapticFeedback.mediumImpact();
                   // ログアウトダイアログを呼び出す
                   showDialog(
                     context: context,

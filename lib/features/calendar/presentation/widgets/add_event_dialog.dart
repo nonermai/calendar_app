@@ -7,6 +7,7 @@ import 'package:calender_app/core/constants/app_string.dart';
 import 'package:calender_app/core/theme/app_theme.dart';
 import 'package:calender_app/core/widgets/liquid_glass_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 
 ///
@@ -164,6 +165,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                   ),
                   DropdownButtonHideUnderline(
                     child: DropdownButton<Color>(
+                      onTap: () => HapticFeedback.mediumImpact(),
                       borderRadius: BorderRadius.circular(16),
                       value: _eventColor,
                       dropdownColor: AppColor.primaryColor,
@@ -179,6 +181,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                               shape: BoxShape.circle,
                             ),
                           ),
+                          onTap: () => HapticFeedback.mediumImpact(),
                         );
                       }).toList(),
                       onChanged: (color) {

@@ -10,6 +10,7 @@ import 'package:calender_app/core/widgets/liquid_glass_text_box.dart';
 import 'package:calender_app/features/auth/domain/auth_result_state.dart';
 import 'package:calender_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -110,6 +111,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           onTap: _isFetchingEvents
               ? null
               : () async {
+                  HapticFeedback.mediumImpact();
                   setState(() => _isFetchingEvents = true);
                   await ref
                       .read(authControllerProvider.notifier)
