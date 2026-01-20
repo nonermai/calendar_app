@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Renon Sumii. All rights reserved.
+// Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
 import 'package:calender_app/features/auth/data/auth_data_source.dart';
@@ -67,5 +67,14 @@ class AuthController extends _$AuthController {
   Future<void> signOut() async {
     await _repo.signOut();
     state = const AsyncData(null);
+  }
+
+  Future<void> deleteAccount() async {
+    try {
+      await _repo.deleteAccount();
+      state = const AsyncData(null);
+    } catch (e) {
+      rethrow;
+    }
   }
 }

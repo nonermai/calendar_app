@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Renon Sumii. All rights reserved.
+// Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
 import 'package:calender_app/features/auth/data/auth_data_source.dart';
@@ -69,6 +69,11 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> signOut() {
     return _dataSource.signOut();
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    await _dataSource.deleteAccount();
   }
 
   AuthResultState _mapError(FirebaseAuthException e) {

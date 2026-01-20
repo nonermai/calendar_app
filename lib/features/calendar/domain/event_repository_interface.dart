@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Renon Sumii. All rights reserved.
+// Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
 import 'event.dart';
@@ -12,4 +12,5 @@ abstract class EventRepository {
   Future<List<Event>> fetchEvents(String uid);
   Future<void> createEvent(String uid, Event event);
   Future<void> deleteEvent(String uid, String eventId);
+  Future<void> deleteUserDocument(String uid);
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Renon Sumii. All rights reserved.
+// Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
 import 'package:calender_app/features/auth/domain/auth_result.dart';
@@ -11,4 +11,5 @@ abstract class AuthRepository {
   Future<AuthResult> signInAnonymously();
   Future<AuthResult> signUp(String email, String password);
   Future<void> signOut();
+  Future<void> deleteAccount();
 }

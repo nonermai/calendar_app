@@ -55,4 +55,19 @@ class EventDataSource {
         .doc(eventId)
         .delete();
   }
+
+  /// uidを指定してユーザーのドキュメントを削除
+  Future<void> deleteUserDocument(String uid) async {
+    debugPrint('--> Delete user document uid=$uid');
+    final userDocument = _db.collection('users').doc(uid);
+
+    // 全イベントを削除
+    final eventsSnapshot = await userDocument.collection('events').get();
+    for (final doc in eventsSnapshot.docs) {
+      await doc.reference.delete();
+    }
+
+    // ユーザードキュメントを削除
+    await userDocument.delete();
+  }
 }

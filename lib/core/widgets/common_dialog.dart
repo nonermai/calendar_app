@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Renon Sumii. All rights reserved.
+// Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
 import 'package:calender_app/core/constants/app_layout.dart';
@@ -15,8 +15,11 @@ class CommonDialog extends StatelessWidget {
     required this.title,
     required this.primaryButtonText,
     required this.secondButtonText,
+    this.thirdButtonText,
     this.primaryAction,
     this.secondAction,
+    this.thirdAction,
+    this.isVertical = false,
     super.key,
   });
 
@@ -24,9 +27,13 @@ class CommonDialog extends StatelessWidget {
 
   final String primaryButtonText;
   final String secondButtonText;
+  final String? thirdButtonText;
 
   final VoidCallback? primaryAction;
   final VoidCallback? secondAction;
+  final VoidCallback? thirdAction;
+
+  final bool isVertical;
 
   @override
   Widget build(BuildContext context) {
@@ -47,25 +54,59 @@ class CommonDialog extends StatelessWidget {
         ),
       ),
       actions: [
-        Row(
-          children: [
-            LiquidGlassButton(
-              onTap: secondAction,
-              child: Text(
-                secondButtonText,
+        if (isVertical)
+          Center(
+            child: Column(
+              children: [
+                LiquidGlassButton(
+                  onTap: primaryAction,
+                  child: Text(
+                    primaryButtonText,
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                LiquidGlassButton(
+                  onTap: secondAction,
+                  child: Text(
+                    secondButtonText,
+                  ),
+                ),
+                if (thirdButtonText != null) ...[
+                  SizedBox(
+                    height: 8,
+                  ),
+                  LiquidGlassButton(
+                    onTap: thirdAction,
+                    child: Text(
+                      thirdButtonText!,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          )
+        else
+          Row(
+            children: [
+              LiquidGlassButton(
+                onTap: secondAction,
+                child: Text(
+                  secondButtonText,
+                ),
               ),
-            ),
-            SizedBox(
-              width: 7,
-            ),
-            LiquidGlassButton(
-              onTap: primaryAction,
-              child: Text(
-                primaryButtonText,
+              SizedBox(
+                width: 7,
               ),
-            ),
-          ],
-        ),
+              LiquidGlassButton(
+                onTap: primaryAction,
+                child: Text(
+                  primaryButtonText,
+                ),
+              ),
+            ],
+          ),
       ],
     );
   }

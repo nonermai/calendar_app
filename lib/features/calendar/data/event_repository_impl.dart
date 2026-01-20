@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Renon Sumii. All rights reserved.
+// Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
 import 'package:calender_app/features/calendar/domain/event.dart';
@@ -34,5 +34,10 @@ class EventRepositoryImpl implements EventRepository {
       uid: uid,
       eventId: eventId,
     );
+  }
+
+  @override
+  Future<void> deleteUserDocument(String uid) {
+    return _dataSource.deleteUserDocument(uid);
   }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Renon Sumii. All rights reserved.
+// Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,5 +48,21 @@ class AuthDataSource {
     debugPrint('--> Sign out');
     await _auth.signOut();
     debugPrint('<-- Signed out');
+  }
+
+  Future<void> deleteAccount() async {
+    debugPrint('--> Delete account');
+    final user = _auth.currentUser;
+    if (user == null) return;
+
+    try {
+      await user.delete();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        throw Exception('再ログインが必要です');
+      }
+      rethrow;
+    }
+    debugPrint('<-- Deleted account');
   }
 }

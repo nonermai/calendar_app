@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Renon Sumii. All rights reserved.
+// Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
 import 'package:calender_app/features/auth/presentation/controllers/auth_controller.dart';
@@ -72,5 +72,12 @@ class EventListController extends _$EventListController {
     // Viewを更新
     // プロバイダーを削除することで、buildメソッドが呼ばれ最新データを取得する
     ref.invalidateSelf();
+  }
+
+  // ユーザードキュメント削除メソッド
+  Future<void> deleteUserDocument() async {
+    final authUser = ref.read(authControllerProvider).value;
+    if (authUser == null) return;
+    await _repo.deleteUserDocument(authUser.uid);
   }
 }

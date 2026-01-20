@@ -9,6 +9,7 @@ import 'package:calender_app/core/theme/app_theme.dart';
 import 'package:calender_app/core/widgets/common_dialog.dart';
 import 'package:calender_app/core/widgets/liquid_glass_button.dart';
 import 'package:calender_app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:calender_app/features/calendar/presentation/controllers/event_list_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -214,30 +215,42 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                   height: 56,
                   width: 56,
                   child: Icon(
-                    Icons.logout,
+                    Icons.settings,
                     color: AppColor.secondaryColor,
                     size: 20,
                   ),
                 ),
                 onTap: () {
                   HapticFeedback.mediumImpact();
-                  // ログアウトダイアログを呼び出す
                   showDialog(
                     context: context,
                     builder: (context) {
+                      final authController = ref.read(
+                        authControllerProvider.notifier,
+                      );
                       return CommonDialog(
-                        title: 'ログアウトしますか？',
-                        primaryButtonText: 'はい',
-                        secondButtonText: 'キャンセル',
+                        title: '設定一覧',
+                        isVertical: true,
+                        primaryButtonText: 'ログアウト',
+                        secondButtonText: 'アカウント削除',
+                        thirdButtonText: '戻る',
                         primaryAction: () {
+                          HapticFeedback.mediumImpact();
+                          authController.signOut();
                           Navigator.pop(context);
-                          ref
-                              .read(
-                                authControllerProvider.notifier,
-                              )
-                              .signOut();
                         },
                         secondAction: () {
+                          HapticFeedback.mediumImpact();
+                          ref
+                              .read(
+                                eventListControllerProvider.notifier,
+                              )
+                              .deleteUserDocument();
+                          authController.deleteAccount();
+                          Navigator.pop(context);
+                        },
+                        thirdAction: () {
+                          HapticFeedback.mediumImpact();
                           Navigator.pop(context);
                         },
                       );
