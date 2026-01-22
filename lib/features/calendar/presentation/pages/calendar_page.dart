@@ -229,9 +229,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      final authController = ref.read(
-                        authControllerProvider.notifier,
-                      );
                       return CommonDialog(
                         title: '設定一覧',
                         isVertical: true,
@@ -239,19 +236,12 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                         secondButtonText: 'アカウント削除',
                         thirdButtonText: '戻る',
                         primaryAction: () {
-                          HapticFeedback.mediumImpact();
-                          authController.signOut();
                           Navigator.pop(context);
+                          _onTapLogout();
                         },
                         secondAction: () {
-                          HapticFeedback.mediumImpact();
-                          ref
-                              .read(
-                                eventListControllerProvider.notifier,
-                              )
-                              .deleteUserDocument();
-                          authController.deleteAccount();
                           Navigator.pop(context);
+                          _onTapDeleteAccount();
                         },
                         thirdAction: () {
                           HapticFeedback.mediumImpact();
@@ -266,6 +256,67 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           ],
         ),
       ),
+    );
+  }
+
+  // ログアウトタップ時の処理
+  Future<void> _onTapLogout() async {
+    HapticFeedback.mediumImpact();
+    showDialog(
+      context: context,
+      builder: (context) {
+        final authController = ref.read(
+          authControllerProvider.notifier,
+        );
+        return CommonDialog(
+          title: '本当にログアウトしますか？',
+          isVertical: true,
+          primaryButtonText: 'ログアウト',
+          secondButtonText: 'キャンセル',
+          primaryAction: () {
+            HapticFeedback.mediumImpact();
+            authController.signOut();
+            Navigator.pop(context);
+          },
+          secondAction: () {
+            HapticFeedback.mediumImpact();
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
+  }
+
+  // アカウント削除タップ時の処理
+  Future<void> _onTapDeleteAccount() async {
+    HapticFeedback.mediumImpact();
+    showDialog(
+      context: context,
+      builder: (context) {
+        final authController = ref.read(
+          authControllerProvider.notifier,
+        );
+        return CommonDialog(
+          title: '本当にアカウントを削除しますか？',
+          isVertical: true,
+          primaryButtonText: '削除',
+          secondButtonText: 'キャンセル',
+          primaryAction: () {
+            HapticFeedback.mediumImpact();
+            ref
+                .read(
+                  eventListControllerProvider.notifier,
+                )
+                .deleteUserDocument();
+            authController.deleteAccount();
+            Navigator.pop(context);
+          },
+          secondAction: () {
+            HapticFeedback.mediumImpact();
+            Navigator.pop(context);
+          },
+        );
+      },
     );
   }
 }
