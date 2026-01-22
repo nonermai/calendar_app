@@ -1,8 +1,8 @@
 name: calender_app
 description: "A new Flutter project."
 publish_to: 'none'
-
-version: 1.0.0+1
+# App Storeに表示されるバージョン、ビルド番号
+version: 1.0.1+2
 
 environment:
   sdk: ^3.9.2
