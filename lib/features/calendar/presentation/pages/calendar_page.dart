@@ -5,6 +5,7 @@
 import 'package:calender_app/core/constants/app_duration.dart';
 import 'package:calender_app/core/constants/app_layout.dart';
 import 'package:calender_app/core/constants/app_logic.dart';
+import 'package:calender_app/core/services/in_app_review_service.dart';
 import 'package:calender_app/core/theme/app_theme.dart';
 import 'package:calender_app/core/widgets/common_dialog.dart';
 import 'package:calender_app/core/widgets/liquid_glass_button.dart';
@@ -73,6 +74,9 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
       // スプラッシュ画面を削除
       FlutterNativeSplash.remove();
+
+      // アプリ内レビュー表示
+      await InAppReviewService.tryShowReview();
     });
 
     // スクロール監視リスナー追加
