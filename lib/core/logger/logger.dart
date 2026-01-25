@@ -1,6 +1,7 @@
 //
 // Copyright (c) 2026 Renon Sumii. All rights reserved.
 //
+
 import 'package:logger/logger.dart' as l;
 
 class Logger {
