@@ -3,8 +3,8 @@
 //
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:calender_app/features/calendar/domain/event.dart';
+import 'package:calender_app/core/logger/logger.dart';
 
 ///
 /// 実際にDB操作するクラス
@@ -14,13 +14,13 @@ class EventDataSource {
 
   /// イベント一覧取得
   Future<List<Event>> getEvents(String uid) async {
-    debugPrint('--> Fetching events from Firestore');
+    Logger.d('--> Fetching events from Firestore');
     final snapshot = await FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
         .collection('events')
         .get();
-    debugPrint(
+    Logger.d(
       '<-- Fetching events result : ${snapshot.docs.map((e) => e.data())}',
     );
     return snapshot.docs.map((doc) => Event.fromJson(doc.data())).toList();
@@ -31,7 +31,7 @@ class EventDataSource {
     required String uid,
     required Event event,
   }) async {
-    debugPrint('--> Create event for uid=$uid: ${event.toJson()}');
+    Logger.d('--> Create event for uid=$uid: ${event.toJson()}');
 
     await _db
         .collection('users')
@@ -46,7 +46,7 @@ class EventDataSource {
     required String uid,
     required String eventId,
   }) async {
-    debugPrint('--> Delete event uid=$uid eventId=$eventId');
+    Logger.d('--> Delete event uid=$uid eventId=$eventId');
 
     await _db
         .collection('users')
@@ -58,7 +58,7 @@ class EventDataSource {
 
   /// uidを指定してユーザーのドキュメントを削除
   Future<void> deleteUserDocument(String uid) async {
-    debugPrint('--> Delete user document uid=$uid');
+    Logger.d('--> Delete user document uid=$uid');
     final userDocument = _db.collection('users').doc(uid);
 
     // 全イベントを削除

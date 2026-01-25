@@ -2,6 +2,8 @@
 // Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
+import 'package:calender_app/core/analytics/analytics_provider.dart';
+import 'package:calender_app/core/analytics/button_name.dart';
 import 'package:calender_app/core/constants/app_layout.dart';
 import 'package:calender_app/core/constants/app_logic.dart';
 import 'package:calender_app/core/constants/app_string.dart';
@@ -526,6 +528,11 @@ class _CalendarBodyState extends ConsumerState<CalendarBody> {
                                     primaryButtonText: AppString.delete,
                                     secondButtonText: AppString.cancel,
                                     primaryAction: () {
+                                      ref
+                                          .read(analyticsHelperProvider)
+                                          .logButtonTap(
+                                            ButtonName.deleteEvent,
+                                          );
                                       // idを指定してイベント削除
                                       eventListController.deleteEvent(
                                         event.id,
@@ -564,6 +571,9 @@ class _CalendarBodyState extends ConsumerState<CalendarBody> {
                         return AddEventDialog(
                           initialDate: selected,
                           onAddEvent: (title, start, end, color) {
+                            ref
+                                .read(analyticsHelperProvider)
+                                .logButtonTap(ButtonName.addEvent);
                             eventListController.createEvent(
                               title,
                               start,

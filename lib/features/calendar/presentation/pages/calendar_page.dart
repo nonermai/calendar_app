@@ -2,6 +2,9 @@
 // Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
+import 'package:calender_app/core/analytics/analytics_provider.dart';
+import 'package:calender_app/core/analytics/button_name.dart';
+import 'package:calender_app/core/analytics/screen_name.dart';
 import 'package:calender_app/core/constants/app_duration.dart';
 import 'package:calender_app/core/constants/app_layout.dart';
 import 'package:calender_app/core/constants/app_logic.dart';
@@ -47,6 +50,8 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   @override
   void initState() {
     super.initState();
+    // 画面表示のログを送信
+    ref.read(analyticsHelperProvider).logScreenView(ScreenName.calendar);
 
     // 初期表示は必ず現在月
     _dispMonthIndex = _currentMonthIndex;
@@ -134,6 +139,9 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                 borderRadius: 25.0,
                 onTap: () {
                   HapticFeedback.mediumImpact();
+                  ref
+                      .read(analyticsHelperProvider)
+                      .logButtonTap(ButtonName.backToCurrentMonth);
                   _itemScrollController.scrollTo(
                     alignment: 0.1,
                     index: _currentMonthIndex,
@@ -226,6 +234,9 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                 ),
                 onTap: () {
                   HapticFeedback.mediumImpact();
+                  ref
+                      .read(analyticsHelperProvider)
+                      .logButtonTap(ButtonName.setting);
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -275,6 +286,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           secondButtonText: 'キャンセル',
           primaryAction: () {
             HapticFeedback.mediumImpact();
+            ref.read(analyticsHelperProvider).logButtonTap(ButtonName.logout);
             authController.signOut();
             Navigator.pop(context);
           },
@@ -303,6 +315,9 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           secondButtonText: 'キャンセル',
           primaryAction: () {
             HapticFeedback.mediumImpact();
+            ref
+                .read(analyticsHelperProvider)
+                .logButtonTap(ButtonName.accountDelete);
             ref
                 .read(
                   eventListControllerProvider.notifier,

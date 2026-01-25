@@ -2,13 +2,13 @@
 // Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
+import 'package:calender_app/core/logger/logger.dart';
 import 'package:calender_app/features/auth/data/auth_data_source.dart';
 import 'package:calender_app/features/auth/domain/auth_result_state.dart';
 import 'package:calender_app/features/auth/domain/auth_repository.dart';
 import 'package:calender_app/features/auth/domain/auth_result.dart';
 import 'package:calender_app/features/auth/domain/auth_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthDataSource _dataSource;
@@ -32,7 +32,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return AuthSuccess(authUser);
     } on FirebaseAuthException catch (e) {
-      debugPrint('signIn error: ${e.code}');
+      Logger.e('signIn error: ${e.code}');
       return AuthFailure(_mapError(e));
     }
   }
@@ -47,7 +47,7 @@ class AuthRepositoryImpl implements AuthRepository {
         ),
       );
     } on FirebaseAuthException catch (e) {
-      debugPrint('anonymous signIn error: ${e.code}');
+      Logger.e('anonymous signIn error: ${e.code}');
       return AuthFailure(AuthResultState.unknown);
     }
   }
@@ -61,7 +61,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return AuthSuccess(authUser);
     } on FirebaseAuthException catch (e) {
-      debugPrint('signUp error: ${e.code}');
+      Logger.e('signUp error: ${e.code}');
       return AuthFailure(_mapError(e));
     }
   }

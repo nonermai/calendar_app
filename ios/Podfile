@@ -1,5 +1,5 @@
-# ターゲットバージョンをiOS 15.0以上に設定
-platform :ios, '15.0'
+# ターゲットバージョンをiOS 16.0以上に設定
+platform :ios, '16.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'

@@ -2,8 +2,8 @@
 // Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
+import 'package:calender_app/core/logger/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class AuthDataSource {
   final FirebaseAuth _auth;
@@ -11,47 +11,47 @@ class AuthDataSource {
   AuthDataSource(this._auth);
 
   User? get currentUser {
-    debugPrint('--> Get currentUser');
-    debugPrint('<-- Got currentUser: ${_auth.currentUser?.uid}');
+    Logger.d('--> Get currentUser');
+    Logger.d('<-- Got currentUser: ${_auth.currentUser?.uid}');
     return _auth.currentUser;
   }
 
   Future<User> signIn(String email, String password) async {
-    debugPrint('--> Sign in');
+    Logger.d('--> Sign in');
     final result = await _auth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
-    debugPrint('<-- Signed in user: ${result.user?.uid}');
+    Logger.d('<-- Signed in user: ${result.user?.uid}');
     return result.user!;
   }
 
   Future<User> signInAnonymously() async {
-    debugPrint('--> Sign in anonymously');
+    Logger.d('--> Sign in anonymously');
     final result = await _auth.signInAnonymously();
-    debugPrint('<-- Anonymous user uid: ${result.user?.uid}');
+    Logger.d('<-- Anonymous user uid: ${result.user?.uid}');
     return result.user!;
   }
 
   Future<User> signUp(String email, String password) async {
-    debugPrint('--> Sign up');
+    Logger.d('--> Sign up');
     final result = await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
 
-    debugPrint('<-- Signed up user: ${result.user?.uid}');
+    Logger.d('<-- Signed up user: ${result.user?.uid}');
     return result.user!;
   }
 
   Future<void> signOut() async {
-    debugPrint('--> Sign out');
+    Logger.d('--> Sign out');
     await _auth.signOut();
-    debugPrint('<-- Signed out');
+    Logger.d('<-- Signed out');
   }
 
   Future<void> deleteAccount() async {
-    debugPrint('--> Delete account');
+    Logger.d('--> Delete account');
     final user = _auth.currentUser;
     if (user == null) return;
 
@@ -63,6 +63,6 @@ class AuthDataSource {
       }
       rethrow;
     }
-    debugPrint('<-- Deleted account');
+    Logger.d('<-- Deleted account');
   }
 }

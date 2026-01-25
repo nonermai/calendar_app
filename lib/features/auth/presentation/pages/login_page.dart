@@ -2,6 +2,9 @@
 // Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
+import 'package:calender_app/core/analytics/analytics_provider.dart';
+import 'package:calender_app/core/analytics/button_name.dart';
+import 'package:calender_app/core/analytics/screen_name.dart';
 import 'package:calender_app/core/animation/background_animation.dart';
 import 'package:calender_app/core/constants/app_string.dart';
 import 'package:calender_app/core/utils/auth_validator.dart';
@@ -29,6 +32,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   void initState() {
+    // 画面表示のログを送信
+    ref.read(analyticsHelperProvider).logScreenView(ScreenName.login);
+
     // スプラッシュ画面を削除
     FlutterNativeSplash.remove();
     super.initState();
@@ -112,6 +118,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               ? null
               : () async {
                   HapticFeedback.mediumImpact();
+                  ref
+                      .read(analyticsHelperProvider)
+                      .logButtonTap(ButtonName.guestLogin);
                   setState(() => _isFetchingEvents = true);
                   await ref
                       .read(authControllerProvider.notifier)
@@ -183,6 +192,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         }
 
                         setState(() => _isFetchingEvents = true);
+                        ref
+                            .read(analyticsHelperProvider)
+                            .logButtonTap(ButtonName.signUp);
                         final resultState = await ref
                             .read(authControllerProvider.notifier)
                             .signUp(email, password);
@@ -226,6 +238,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         }
 
                         setState(() => _isFetchingEvents = true);
+                        ref
+                            .read(analyticsHelperProvider)
+                            .logButtonTap(ButtonName.login);
                         final resultState = await ref
                             .read(authControllerProvider.notifier)
                             .signIn(email, password);

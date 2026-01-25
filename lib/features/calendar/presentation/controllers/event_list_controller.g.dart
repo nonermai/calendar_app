@@ -43,7 +43,7 @@ final class EventListControllerProvider
 }
 
 String _$eventListControllerHash() =>
-    r'9da289bfcbd8bd95a2c3bec86d9d694f558f779d';
+    r'658b410248cb4ca74d1d71eede5355d2d991bc7d';
 
 ///
 /// イベント一覧を管理するコントローラー（StateNotifier / ViewModel)みたいなもん
