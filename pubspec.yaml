@@ -2,7 +2,7 @@ name: calender_app
 description: "A new Flutter project."
 publish_to: 'none'
 # App Storeに表示されるバージョン、ビルド番号
-version: 1.0.2+1
+version: 1.0.3+1
 
 environment:
   sdk: ^3.9.2
@@ -32,6 +32,9 @@ dependencies:
   in_app_review: ^2.0.11
   firebase_analytics: ^12.1.1
   logger: ^2.6.2
+  firebase_remote_config: ^6.1.4
+  package_info_plus: ^9.0.0
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

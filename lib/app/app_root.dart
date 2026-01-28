@@ -2,6 +2,7 @@
 // Copyright (c) 2025-2026 Renon Sumii. All rights reserved.
 //
 
+import 'package:calender_app/core/remote_config/remote_config_initializer.dart';
 import 'package:calender_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:calender_app/features/auth/presentation/pages/login_page.dart';
 import 'package:calender_app/features/calendar/presentation/pages/calendar_page.dart';
@@ -13,6 +14,8 @@ class AppRoot extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // RemoteConfig初期化
+    ref.watch(remoteConfigInitializerProvider);
     final authState = ref.watch(authControllerProvider);
 
     return authState.when(

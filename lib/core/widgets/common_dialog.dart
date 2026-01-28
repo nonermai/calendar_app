@@ -14,7 +14,7 @@ class CommonDialog extends StatelessWidget {
   const CommonDialog({
     required this.title,
     required this.primaryButtonText,
-    required this.secondButtonText,
+    this.secondButtonText,
     this.thirdButtonText,
     this.primaryAction,
     this.secondAction,
@@ -26,7 +26,7 @@ class CommonDialog extends StatelessWidget {
   final String title;
 
   final String primaryButtonText;
-  final String secondButtonText;
+  final String? secondButtonText;
   final String? thirdButtonText;
 
   final VoidCallback? primaryAction;
@@ -64,15 +64,17 @@ class CommonDialog extends StatelessWidget {
                     primaryButtonText,
                   ),
                 ),
-                SizedBox(
-                  height: 8,
-                ),
-                LiquidGlassButton(
-                  onTap: secondAction,
-                  child: Text(
-                    secondButtonText,
+                if (secondButtonText != null) ...[
+                  SizedBox(
+                    height: 8,
                   ),
-                ),
+                  LiquidGlassButton(
+                    onTap: secondAction,
+                    child: Text(
+                      secondButtonText!,
+                    ),
+                  ),
+                ],
                 if (thirdButtonText != null) ...[
                   SizedBox(
                     height: 8,
@@ -89,16 +91,19 @@ class CommonDialog extends StatelessWidget {
           )
         else
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              LiquidGlassButton(
-                onTap: secondAction,
-                child: Text(
-                  secondButtonText,
+              if (secondButtonText != null) ...[
+                LiquidGlassButton(
+                  onTap: secondAction,
+                  child: Text(
+                    secondButtonText!,
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 7,
-              ),
+                SizedBox(
+                  width: 7,
+                ),
+              ],
               LiquidGlassButton(
                 onTap: primaryAction,
                 child: Text(

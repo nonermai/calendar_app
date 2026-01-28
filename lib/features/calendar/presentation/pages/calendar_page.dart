@@ -8,6 +8,9 @@ import 'package:calender_app/core/analytics/screen_name.dart';
 import 'package:calender_app/core/constants/app_duration.dart';
 import 'package:calender_app/core/constants/app_layout.dart';
 import 'package:calender_app/core/constants/app_logic.dart';
+import 'package:calender_app/core/constants/app_urls.dart';
+import 'package:calender_app/core/remote_config/remote_config_provider.dart';
+import 'package:calender_app/core/remote_config/update_checker.dart';
 import 'package:calender_app/core/services/in_app_review_service.dart';
 import 'package:calender_app/core/theme/app_theme.dart';
 import 'package:calender_app/core/widgets/common_dialog.dart';
@@ -21,6 +24,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calender_app/features/calendar/presentation/widgets/calendar_body.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 ///
 /// カレンダー画面
@@ -82,6 +86,35 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
       // アプリ内レビュー表示
       await InAppReviewService.tryShowReview();
+
+      // RemoteConfigから強制アップデートバージョンを取得
+      final remoteConfig = ref.read(remoteConfigServiceProvider);
+      final forceVersion = remoteConfig.forceUpdateVersion;
+      if (await UpdateChecker.shouldUpdate(
+        forceUpdateVersion: forceVersion,
+      )) {
+        // アップデートが必要な場合、アップデートダイアログを表示
+        // ダイアログ表示
+        if (!mounted) {
+          return;
+        }
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return CommonDialog(
+              title: '新しいバージョンが利用可能です',
+              primaryButtonText: 'App Storeへ移動',
+              primaryAction: () async {
+                HapticFeedback.mediumImpact();
+                await launchUrl(
+                  Uri.parse(AppUrls.appStoreUrl),
+                );
+              },
+            );
+          },
+        );
+      }
     });
 
     // スクロール監視リスナー追加

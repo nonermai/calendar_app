@@ -49,4 +49,4 @@ final class AnalyticsHelperProvider
   }
 }
 
-String _$analyticsHelperHash() => r'1d5525182ae8475a351c6f4cfe7714a9eb15fcd0';
+String _$analyticsHelperHash() => r'a17d83c69d8fca159e9efe52e23bd4b44c28a0a2';
